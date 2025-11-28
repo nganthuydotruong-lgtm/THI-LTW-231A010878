@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài 01 - Booking System</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="booking-bg">
+  <div class="container">
+    <h1>RẠP CHIẾU PHIM - CHỌN GHẾ</h1>
+    <div class="screen">MÀN HÌNH</div>
+    <div class="seats-grid" id="seatsContainer"></div>
+
+    <div class="booking-info">
+      <p>Ghế đã chọn: <strong id="count">0</strong></p>
+      <p>Tổng tiền: <strong id="total">0</strong>đ</p>
+    </div>
+    <button id="payBtn">Thanh toán</button>
+  </div>
+
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <h2>XÁC NHẬN ĐẶT VÉ</h2>
+      <div id="summary"></div>
+      <button onclick="document.getElementById('modal').style.display='none'">Đóng</button>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

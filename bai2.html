@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài 02 - Todo Matrix</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="todo-app">
+  <div class="todo-info">
+    <img src="images/avatar.jpg" alt="Avatar">
+    <h2>TRƯƠNG ĐỖ THUỲ NGÂN</h2>
+    <p>MSSV: 231A010878</p>
+  </div>
+
+  <div class="todo-board">
+    <div class="add-task">
+      <input type="text" id="taskName" placeholder="Nhập tên công việc">
+      <select id="priority">
+        <option value="1">1 - Quan trọng & Khẩn cấp</option>
+        <option value="2">2 - Quan trọng - Không khẩn cấp</option>
+        <option value="3">3 - Không quan trọng - Khẩn cấp</option>
+        <option value="4">4 - Không quan trọng & Không khẩn cấp</option>
+      </select>
+      <button>Thêm công việc</button>
+    </div>
+
+    <div class="matrix">
+      <div class="quadrant"><h3>1. Quan trọng & Khẩn cấp</h3><div id="q1"></div></div>
+      <div class="quadrant"><h3>2. Quan trọng - Không khẩn cấp</h3><div id="q2"></div></div>
+      <div class="quadrant"><h3>3. Không quan trọng - Khẩn cấp</h3><div id="q3"></div></div>
+      <div class="quadrant"><h3>4. Không quan trọng & Không khẩn cấp</h3><div id="q4"></div></div>
+    </div>
+  </div>
+</div>
+<script src="js/main.js"></script>
+</body>
+</html>
