@@ -1,15 +1,11 @@
-// main.js – TỐI ƯU NHẤT CHO THI LTW
-// MSSV: 231A010878 – Trương Đỗ Thùy Ngân
-
+// main.js – MSSV: 231A010878
 const MSSV = "231A010878";
-// Kiểm tra số cuối MSSV: Chẵn (8) -> true (RED), Lẻ -> false (BLUE)
-const IS_RED = MSSV.slice(-1) % 2 === 0; 
+const IS_RED = MSSV.slice(-1) % 2 === 0; // true: Chẵn (Đỏ) | false: Lẻ (Xanh Dương)
 const TODO_STORAGE_KEY = "tasks_" + MSSV;
 
 document.addEventListener("DOMContentLoaded", () => {
-    console.log(`main.js loaded for MSSV: ${MSSV}`);
 
-    // === HIỆU ỨNG CHUNG (Tốt, giữ nguyên) ===
+    // === HIỆU ỨNG CHUNG ===
     document.querySelectorAll(".home-card, .theory-wrapper > *").forEach((el, i) => {
         el.style.opacity = 0;
         el.style.transform = "translateY(20px)";
@@ -21,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // ===========================================
-    // === BÀI 01: BOOKING SYSTEM LOGIC ===
+    // === BÀI 01: BOOKING SYSTEM LOGIC (Chỉ chạy trên bai01.html) ===
     // ===========================================
     if (document.getElementById("seatsContainer")) {
         const container = document.getElementById("seatsContainer");
@@ -34,7 +30,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const updateBookingSummary = () => {
             countEl.textContent = selected.length;
-            // Tính tổng tiền bằng reduce và định dạng
             totalEl.textContent = selected.reduce((s, x) => s + prices[x.type], 0).toLocaleString('vi-VN');
         };
 
@@ -63,33 +58,34 @@ document.addEventListener("DOMContentLoaded", () => {
         const createSeat = (r, c) => {
             const seat = document.createElement("div");
             seat.className = "seat";
-            seat.textContent = String.fromCharCode(64 + r); // Hiển thị chữ cái hàng
             
-            // Xác định loại ghế và giá
-            if (r <= 2) seat.classList.add("standard");
-            else if (r <= 4) seat.classList.add("vip");
-            else seat.classList.add("sweetbox");
+            // SỬA LỖI HIỂN THỊ: Hiển thị đầy đủ ký hiệu ghế (ví dụ: A1, C5)
+            const seatId = String.fromCharCode(64 + r) + c; 
+            seat.textContent = seatId; 
             
-            // Ghế đã bán (Giả lập)
-            if (Math.random() < 0.22 && r !== 5) seat.classList.add("sold"); // Ghế đôi ít khi bị sold lẻ
+            let seatType;
+            if (r <= 2) { seat.classList.add("standard"); seatType = "standard"; }
+            else if (r <= 4) { seat.classList.add("vip"); seatType = "vip"; }
+            else { seat.classList.add("sweetbox"); seatType = "sweetbox"; }
+            
+            if (Math.random() < 0.22 && r !== 5) seat.classList.add("sold"); 
 
-            // Thiết lập Data Attributes
             seat.dataset.row = r; 
             seat.dataset.col = c;
-            seat.title = `${String.fromCharCode(64+r)}${c} - ${prices[seat.classList.contains("standard") ? "standard" : seat.classList.contains("vip") ? "vip" : "sweetbox"].toLocaleString()}đ`;
+            seat.dataset.type = seatType;
+            seat.title = `${seatId} - ${prices[seatType].toLocaleString('vi-VN')}đ`;
 
             seat.onclick = () => handleSeatClick(seat, r, c);
             return seat;
         };
 
-        // Render ghế
+        container.style.gridTemplateColumns = `repeat(8, 1fr)`;
         for (let r = 1; r <= 5; r++) {
             for (let c = 1; c <= 8; c++) {
                 container.appendChild(createSeat(r, c));
             }
         }
         
-        // Nút Thanh toán
         document.getElementById("payBtn").onclick = () => {
             if (!selected.length) return alert("Vui lòng chọn ghế trước khi thanh toán!");
             
@@ -98,7 +94,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             selected.forEach(s => {
                 const name = s.type === "standard" ? "Thường" : s.type === "vip" ? "VIP" : "Đôi";
-                html += `<li>Ghế ${String.fromCharCode(64+s.r)}${s.c} (${name}) - ${prices[s.type].toLocaleString('vi-VN')}đ</li>`;
+                const seatId = String.fromCharCode(64 + s.r) + s.c;
+                html += `<li>Ghế ${seatId} (${name}) - ${prices[s.type].toLocaleString('vi-VN')}đ</li>`;
             });
 
             html += `</ul><div class="modal-footer"><h2>Tổng tiền: <span style='color:var(--selected-color)'>${finalTotal.toLocaleString('vi-VN')}đ</span></h2></div>`;
@@ -106,13 +103,12 @@ document.addEventListener("DOMContentLoaded", () => {
             modal.style.display = "flex";
         };
 
-        // Đóng Modal
         document.querySelector(".close-modal").onclick = () => modal.style.display = "none";
         modal.onclick = e => e.target === modal && (modal.style.display = "none");
     }
 
     // ===========================================
-    // === BÀI 02: TODO MATRIX LOGIC ===
+    // === BÀI 02: TODO MATRIX LOGIC (Chỉ chạy trên bai02.html) ===
     // ===========================================
     if (document.getElementById("taskBoard")) {
         const q = [null, "q1", "q2", "q3", "q4"].map(id => document.getElementById(id));
@@ -135,12 +131,11 @@ document.addEventListener("DOMContentLoaded", () => {
             div.dataset.id = task.id; 
             div.title = "Click để xóa";
             
-            // Logic Chống AI
             if (task.name.length > 10) {
                 div.classList.add(IS_RED ? "red" : "blue");
             }
 
-            // Gắn sự kiện xóa
+            // SỬA LỖI: Gọi hàm deleteTask để xóa cả trong LocalStorage
             div.onclick = () => deleteTask(task.id, div);
             return div;
         };
@@ -156,10 +151,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 p, 
             };
 
-            // Thêm vào DOM
             q[p].appendChild(createTaskElement(task));
 
-            // Lưu vào LocalStorage
             let tasks = JSON.parse(localStorage.getItem(TODO_STORAGE_KEY) || "[]");
             tasks.push(task);
             localStorage.setItem(TODO_STORAGE_KEY, JSON.stringify(tasks));
@@ -168,14 +161,12 @@ document.addEventListener("DOMContentLoaded", () => {
             input.focus();
         };
 
-        // Gắn sự kiện thêm task
         addTaskBtn.onclick = addTask;
         input.onkeypress = e => e.key === "Enter" && addTask();
 
-        // Load tasks cũ (Sau khi các ô ma trận đã được tạo trong DOM)
         const loadTasks = () => {
              JSON.parse(localStorage.getItem(TODO_STORAGE_KEY) || "[]").forEach(t => {
-                if(q[t.p]) { // Đảm bảo ô ma trận tồn tại
+                if(q[t.p]) { 
                     q[t.p].appendChild(createTaskElement(t));
                 }
             });
