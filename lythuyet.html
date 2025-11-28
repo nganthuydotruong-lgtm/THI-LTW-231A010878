@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phần Lý Thuyết - 231A010878</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="theory-page">
+  <div class="theory-wrapper">
+    <h1>PHẦN LÝ THUYẾT</h1>
+
+    <h2>Câu 1: Phân biệt display:none, visibility:hidden và opacity:0</h2>
+    <ul>
+      <li><strong>display: none</strong>: Xóa hoàn toàn khỏi layout → không chiếm không gian → gây reflow</li>
+      <li><strong>visibility: hidden</strong>: Ẩn nhưng vẫn chiếm không gian → không reflow</li>
+      <li><strong>opacity: 0</strong>: Trong suốt nhưng vẫn chiếm không gian + vẫn nhận sự kiện</li>
+    </ul>
+
+    <h2>Câu 2: Trỏ Domain về Hosting</h2>
+    <p>• <strong>Nameserver</strong>: Thay đổi NS → thời gian cập nhật 4–48 giờ<br>
+       • <strong>A Record</strong>: Chỉ sửa IP → cập nhật nhanh hơn (5–60 phút)<br>
+       → <strong>A Record cập nhật nhanh hơn</strong></p>
+
+    <h2>Câu 3: Viết lại bằng async/await</h2>
+    <pre>
+async function getData() {
+  try {
+    const res = await fetch('https://api.example.com/data');
+    const data = await res.json();
+    console.log(data);
+  } catch (err) {
+    console.error(err);
+  }
+}</pre>
+
+    <a href="index.html" class="back-btn">Quay lại Trang chủ</a>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
